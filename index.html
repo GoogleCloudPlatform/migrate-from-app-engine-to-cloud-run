@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <title>Steren Giannini</title>
+
+  <style>
+  </style>
+</head>
+
+<body>
+
+<a href="https://cloud.google.com/appengine/docs/standard/nodejs/config/appref">app.yaml</a> 
+<textarea id="appyaml">
+runtime: nodejs10
+service: my-service
+
+instance_class: F2
+
+handlers:
+- url: /images
+  static_dir: public/images
+  secure: always
+  redirect_http_response_code: 301
+
+- url: /javascripts
+  static_dir: public/javascripts
+  secure: always
+  redirect_http_response_code: 301
+
+- url: /.*
+  script: auto
+  secure: always
+  redirect_http_response_code: 301
+
+env_variables:
+  LIMIT: 100
+  QUEUE_ID: 'emails'
+
+automatic_scaling:
+  max_concurrent_requests: 80
+  max_instances: 1
+</textarea>
+
+<a href="https://github.com/knative/docs/blob/master/docs/serving/spec/knative-api-specification-1.0.md">service.yaml</a>
+<textarea id="serviceyaml">
+  
+</textarea>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.13.1/js-yaml.min.js"></script>
+<script src="index.js"></script>
+</body></html>
