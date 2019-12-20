@@ -1,49 +1,62 @@
-let appyaml = document.getElementById('appyaml').value;
+function bindListeners() {
+  const appTextArea = document.getElementById('appyaml');
+  appTextArea.addEventListener('input', appToRunDOM);
+}
 
-let gaeService = {'app.yaml': jsyaml.safeLoad(appyaml)};
-console.log(gaeService);
+function appToRunDOM() {
+  let appyaml = document.getElementById('appyaml').value;
 
-let runService = {
-  'service.yaml': {
-    'apiVersion': 'serving.knative.dev/v1',
-    'kind': 'Service',
-    'metadata': {
-      'name' : 'default'
-    },
-    'spec': {
-      'template': {
-        'metadata': {
-          'annotations': {}
-        },
-        'spec': {
-          'containers': [
-            {
-              'image': 'gcr.io/<YOUR-PROJECT>/image'
-            }
-          ]
+  let gaeService = {'app.yaml': jsyaml.safeLoad(appyaml)};
+  console.log(gaeService);
+
+  let runService = appToRun(gaeService);
+
+  document.getElementById('serviceyaml').value = jsyaml.safeDump(runService['service.yaml']);
+}
+
+function appToRun(gaeService) {
+  let runService = {
+    'service.yaml': {
+      'apiVersion': 'serving.knative.dev/v1',
+      'kind': 'Service',
+      'metadata': {
+        'name' : 'default'
+      },
+      'spec': {
+        'template': {
+          'metadata': {
+            'annotations': {}
+          },
+          'spec': {
+            'containers': [
+              {
+                'image': 'gcr.io/<YOUR-PROJECT>/image'
+              }
+            ]
+          }
         }
       }
     }
+  };
+
+  const extractFunctions = [
+    extractName,
+    extractEnvVars,
+    extractMaxInstances,
+    extractConcurrency,
+    extractMemory,
+    extractMigrateToSecondGen,
+    extractDockerfile,
+    extractVPCAccess,
+  ]
+  
+  for (const extractFunction of extractFunctions) {
+    extractFunction(gaeService, runService);
   }
-};
 
-const extractFunctions = [
-  extractName,
-  extractEnvVars,
-  extractMaxInstances,
-  extractConcurrency,
-  extractMemory,
-  extractMigrateToSecondGen,
-  extractDockerfile,
-  extractVPCAccess,
-]
-
-for (const extractFunction of extractFunctions) {
-  extractFunction(gaeService, runService);
+  return runService;
 }
 
-console.log(runService);
-document.getElementById('serviceyaml').value = jsyaml.safeDump(runService['service.yaml']);
 
 function extractName(gae, run) {
   if(gae['app.yaml']['service']) {
@@ -117,3 +130,6 @@ function extractVPCAccess(gae, run){
     // TODO
   }
 }
+
+bindListeners();
+appToRunDOM();
