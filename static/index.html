@@ -2,13 +2,57 @@
 <html lang="en"><head>
   <title>App Engine to Cloud Run</title>
   <style>
+    :root {
+      --gcp-blue: hsl(214, 82%, 51%);
+      --light-blue: hsl(214, 100%, 85%); 
+      --primary-light: var(--light-blue);
+      --primary-dark: var(--gcp-blue);
+
+    }
+    html {
+      background-color: #E5E5E5;
+      height: 100%;
+      margin: 0;
+      font-family: sans-serif;
+    }
+    html, body {
+      margin: 0;
+      height: 100%;
+    }
+    @media (prefers-color-scheme: dark) {
+      html {
+        background-color: #121212;
+        color: #FFFFFF;
+      }
+    }
+
+    body, h1, h2, h3, h4, h5, h6, p, ol, ul {
+      margin: 0;
+      padding: 0;
+      font-weight: 300;
+    }
+    a, a:visited {
+      color: var(--primary-dark);
+      text-decoration: none;
+    }
+    @media (prefers-color-scheme: dark) {
+       a, a:visited {
+           color: var(--primary-light);
+       } 
+    }
+
+    textarea.yaml {
+      height: 80%;
+      width: 30em;
+
+    }
   </style>
 </head>
 
 <body>
 
 <a href="https://cloud.google.com/appengine/docs/standard/nodejs/config/appref">app.yaml</a> 
-<textarea id="appyaml">
+<textarea id="appyaml" class="yaml">
 runtime: nodejs10
 service: my-service
 
@@ -40,9 +84,7 @@ automatic_scaling:
 </textarea>
 
 <a href="https://github.com/knative/docs/blob/master/docs/serving/spec/knative-api-specification-1.0.md">service.yaml</a>
-<textarea id="serviceyaml">
-  
-</textarea>
+<textarea id="serviceyaml" class="yaml" readonly></textarea>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.13.1/js-yaml.min.js"></script>
 <script src="index.js"></script>
