@@ -51,8 +51,15 @@
 
 <body>
 
-<a href="https://cloud.google.com/appengine/docs/standard/nodejs/config/appref">app.yaml</a> 
-<textarea id="appyaml" class="yaml">
+<label for="project-id">GCP Project ID:</label>
+<input type="text" id="project-id" name="project-id" class="input">
+
+<label for="region">App Engine region:</label>
+<input type="text" id="region" name="region" class="input">
+
+
+<label for="appyaml">app.yaml:</label>
+<textarea id="appyaml" class="yaml input">
 runtime: nodejs10
 service: my-service
 
@@ -83,7 +90,13 @@ automatic_scaling:
   max_instances: 1
 </textarea>
 
-<a href="https://github.com/knative/docs/blob/master/docs/serving/spec/knative-api-specification-1.0.md">service.yaml</a>
+<input type="checkbox" id="gae-cloudsql-use" name="gae-cloudsql-use" class="input">
+<label for="gae-cloudsql-use">I use Cloud SQL</label>
+
+<label for="gae-cloudsql-instance">Cloud SQL instance name:</label>
+<input type="text" id="gae-cloudsql-instance" name="gae-cloudsql-instance" class="input">
+
+<label for="serviceyaml">service.yaml:</label>
 <textarea id="serviceyaml" class="yaml"></textarea>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.13.1/js-yaml.min.js"></script>

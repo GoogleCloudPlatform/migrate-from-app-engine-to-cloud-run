@@ -1,14 +1,26 @@
 import { appToRun } from './app-to-run.js';
 
 function bindListeners() {
-  const appTextArea = document.getElementById('appyaml');
-  appTextArea.addEventListener('input', appToRunDOM);
+  const inputs = document.querySelectorAll('.input');
+  for(const input of inputs) {
+    input.addEventListener('input', appToRunDOM);
+  }   
 }
 
 function appToRunDOM() {
+  let gaeService = {};
+  
   let appyaml = document.getElementById('appyaml').value;
 
-  let gaeService = {'app.yaml': jsyaml.safeLoad(appyaml)};
+  gaeService['app.yaml'] = jsyaml.safeLoad(appyaml);
+
+  gaeService['project-id'] = document.getElementById('project-id').value;
+  gaeService['region'] = document.getElementById('region').value;
+
+  if(document.getElementById('gae-cloudsql-use').value) {
+    gaeService['cloudsql-instance'] = document.getElementById('gae-cloudsql-instance').value;
+  };
+
   console.log(gaeService);
 
   let runService = appToRun(gaeService);
