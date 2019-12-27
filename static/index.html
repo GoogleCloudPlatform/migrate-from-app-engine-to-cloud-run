@@ -7,59 +7,28 @@
       --light-blue: hsl(214, 100%, 85%); 
       --primary-light: var(--light-blue);
       --primary-dark: var(--gcp-blue);
-
     }
-    html {
-      background-color: #E5E5E5;
-      height: 100%;
-      margin: 0;
-      font-family: sans-serif;
-    }
-    html, body {
-      margin: 0;
-      height: 100%;
-    }
-    @media (prefers-color-scheme: dark) {
-      html {
-        background-color: #121212;
-        color: #FFFFFF;
-      }
-    }
-
-    body, h1, h2, h3, h4, h5, h6, p, ol, ul {
-      margin: 0;
-      padding: 0;
-      font-weight: 300;
-    }
-    a, a:visited {
-      color: var(--primary-dark);
-      text-decoration: none;
-    }
-    @media (prefers-color-scheme: dark) {
-       a, a:visited {
-           color: var(--primary-light);
-       } 
-    }
-
     textarea.yaml {
-      height: 80%;
-      width: 30em;
-
-    }
+      height: 300px;
+      font-family: monospace;
+      font-size: 0.8em;
+    }  
   </style>
+  <link rel="stylesheet" href="https://unpkg.com/awsm.css/dist/awsm.min.css">
 </head>
 
 <body>
+<header>
+  <h1>App Engine to Cloud Run</h1>
+  <p>An online tool to help you migrating from App Engine to Cloud Run</p>
+</header>
 
-<label for="project-id">GCP Project ID:</label>
-<input type="text" id="project-id" name="project-id" class="input">
+<main>
+  <h2>Your App Engine app</h2>
+  <form id="gae">
 
-<label for="region">App Engine region:</label>
-<input type="text" id="region" name="region" class="input">
-
-
-<label for="appyaml">app.yaml:</label>
-<textarea id="appyaml" class="yaml input">
+    <label for="appyaml"><code>app.yaml</code>:</label>
+    <textarea id="appyaml" class="yaml input">
 runtime: nodejs10
 service: my-service
 
@@ -88,16 +57,38 @@ env_variables:
 automatic_scaling:
   max_concurrent_requests: 80
   max_instances: 1
-</textarea>
+    </textarea>
 
-<input type="checkbox" id="gae-cloudsql-use" name="gae-cloudsql-use" class="input">
-<label for="gae-cloudsql-use">I use Cloud SQL</label>
+    <label for="project-id">GCP Project ID:</label>
+    <input type="text" id="project-id" name="project-id" class="input">
 
-<label for="gae-cloudsql-instance">Cloud SQL instance name:</label>
-<input type="text" id="gae-cloudsql-instance" name="gae-cloudsql-instance" class="input">
+    <label for="region">App Engine region:</label>
+    <input type="text" id="region" name="region" class="input">
 
-<label for="serviceyaml">service.yaml:</label>
-<textarea id="serviceyaml" class="yaml"></textarea>
+    <label for="gae-cloudsql-use">
+      <input type="checkbox" id="gae-cloudsql-use" name="gae-cloudsql-use" class="input">
+      I use Cloud SQL
+    </label>
+
+    <label for="gae-cloudsql-instance">Cloud SQL instance name:</label>
+    <input type="text" id="gae-cloudsql-instance" name="gae-cloudsql-instance" class="input">
+  </form>
+
+  <h2>Migrating to Cloud Run</h2>
+
+  <p>Create a file named <code>Dockerfile</code> at the root of your source tree, with the following content:</p>
+  <label for="dockerfile"><code>Dockerfile</code>:</label>
+  <textarea id="dockerfile"></textarea>
+
+  <p>Create a file named <code>service.yaml</code> with the following content:</p>
+
+  <label for="serviceyaml"><code>service.yaml</code>:</label>
+  <textarea id="serviceyaml" class="yaml"></textarea>
+
+  <p>To build and deploy to Cloud Run, run the following command:</p>
+  <pre><code>$ gcloud builds submit --tag gcr.io/YOUR-PROJECT/my-service && gcloud alpha run services replace service.yaml</code></pre>
+
+</main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.13.1/js-yaml.min.js"></script>
 <script type="module" src="index.js"></script>
