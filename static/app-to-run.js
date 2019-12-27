@@ -53,6 +53,41 @@ function appToRun(gaeService) {
 }
 
 
+const runtimeToDockerfile = {
+'nodejs': 
+`FROM node:slim
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm install --only=production
+COPY . ./
+CMD [ "npm", "start" ]`,
+
+'nodejs8': 
+`FROM node:8-slim
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm install --only=production
+COPY . ./
+CMD [ "npm", "start" ]`,
+
+'nodejs10': 
+`FROM node:10-slim
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm install --only=production
+COPY . ./
+CMD [ "npm", "start" ]`,
+
+'nodejs12': 
+`FROM node:12-slim
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm install --only=production
+COPY . ./
+CMD [ "npm", "start" ]`,
+}
+
+
 function extractName(gae, run) {
   if(gae['app.yaml']['service']) {
     run['service.yaml']['metadata']['name'] = gae['app.yaml']['service'];
@@ -124,11 +159,6 @@ function extractMigrateToSecondGen(gae, run) {
 }
 
 function extractDockerfile(gae, run) {
-  const runtimeToDockerfile = {
-    'nodejs': "TODO",
-    'nodejs10': "TODO node 10"
-  }
-
   run['Dockerfile'] = runtimeToDockerfile[gae['app.yaml']['runtime']]
 }
 

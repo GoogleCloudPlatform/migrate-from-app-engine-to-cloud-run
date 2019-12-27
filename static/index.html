@@ -8,10 +8,12 @@
       --primary-light: var(--light-blue);
       --primary-dark: var(--gcp-blue);
     }
-    textarea.yaml {
-      height: 300px;
+    textarea.file {
       font-family: monospace;
       font-size: 0.8em;
+    }  
+    textarea.yaml {
+      height: 300px;
     }  
   </style>
   <link rel="stylesheet" href="https://unpkg.com/awsm.css/dist/awsm.min.css">
@@ -28,7 +30,7 @@
   <form id="gae">
 
     <label for="appyaml"><code>app.yaml</code>:</label>
-    <textarea id="appyaml" class="yaml input">
+    <textarea id="appyaml" class="file yaml input">
 runtime: nodejs10
 service: my-service
 
@@ -73,12 +75,12 @@ automatic_scaling:
 
   <p>Create a file named <code>Dockerfile</code> at the root of your source tree, with the following content:</p>
   <label for="dockerfile"><code>Dockerfile</code>:</label>
-  <textarea id="dockerfile"></textarea>
+  <textarea id="dockerfile" class="file"></textarea>
 
   <p>Create a file named <code>service.yaml</code> with the following content:</p>
 
   <label for="serviceyaml"><code>service.yaml</code>:</label>
-  <textarea id="serviceyaml" class="yaml"></textarea>
+  <textarea id="serviceyaml" class="yaml file"></textarea>
 
   <p>To build and deploy to Cloud Run, run the following command:</p>
   <pre><code>$ gcloud builds submit --tag gcr.io/YOUR-PROJECT/my-service && gcloud alpha run services replace service.yaml</code></pre>

@@ -26,6 +26,7 @@ function appToRunDOM() {
   let runService = appToRun(gaeService);
 
   document.getElementById('serviceyaml').value = jsyaml.safeDump(runService['service.yaml']);
+  document.getElementById('dockerfile').value = runService['Dockerfile'];
 }
 
 
