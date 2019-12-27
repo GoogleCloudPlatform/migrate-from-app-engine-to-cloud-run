@@ -87,6 +87,14 @@ COPY . ./
 CMD [ "npm", "start" ]`,
 }
 
+  const firstGenRuntimes = ['python27', 'php55', 'go111'];
+
+const firstGenMigrationGuides = {
+'go111': 'https://cloud.google.com/appengine/docs/standard/go/go-differences',
+'python27': 'https://cloud.google.com/appengine/docs/standard/python/',
+'php55': 'https://cloud.google.com/appengine/docs/standard/php7/php-differences',
+// (Java does not use an app.yaml): 'https://cloud.google.com/appengine/docs/standard/java11/java-differences',
+}
 
 function extractName(gae, run) {
   if(gae['app.yaml']['service']) {
@@ -150,11 +158,11 @@ function extractMemory(gae, run) {
 }
 
 function extractMigrateToSecondGen(gae, run) {
-  const firstGenRuntimes = ['python27', 'php55'];
   const runtime = gae['app.yaml']['runtime'];
   // "api_version" was deprecated for secnd gen runtimes
   if(gae['app.yaml']['api_version'] || firstGenRuntimes.includes(runtime)) {
     run['migrate-to-second-gen'] = true;
+    run['migration-guide'] = firstGenMigrationGuides[runtime];
   }
 }
 

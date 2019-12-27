@@ -21,10 +21,12 @@ function appToRunDOM() {
     gaeService['cloudsql-instance'] = document.getElementById('gae-cloudsql-instance').value;
   };
 
-  console.log(gaeService);
+  console.log({gaeService});
 
   let runService = appToRun(gaeService);
 
+  console.log({runService});
+  
   document.getElementById('serviceyaml').value = jsyaml.safeDump(runService['service.yaml']);
   document.getElementById('dockerfile').value = runService['Dockerfile'];
 }
