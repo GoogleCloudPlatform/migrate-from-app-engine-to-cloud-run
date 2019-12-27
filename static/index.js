@@ -1,3 +1,5 @@
+// TODO, for first gen to second gen, display migration guide.
+
 import { appToRun } from './app-to-run.js';
 
 function bindListeners() {

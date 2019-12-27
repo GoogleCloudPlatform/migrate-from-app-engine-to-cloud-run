@@ -1,8 +1,6 @@
 // app.yaml reference: https://cloud.google.com/appengine/docs/standard/nodejs/config/appref
 // service.yaml reference: https://github.com/knative/docs/blob/master/docs/serving/spec/knative-api-specification-1.0.md
 
-// TODO, for first gen to second gen, print ou links to migration guide.
-
 /**
  * @param {Object} gaeService - Information about the App Engine service, should at minimum contain {"app.yaml" : {}}
  */
