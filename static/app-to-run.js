@@ -31,6 +31,7 @@ function appToRun(gaeService) {
 
   const extractFunctions = [
     extractName,
+    extractImageURL,
     extractEnvVars,
     extractMaxInstances,
     extractConcurrency,
@@ -122,10 +123,17 @@ function extractVPCAccess(gae, run){
   }
 }
 
-function extractCloudSQL(gae,run) {
+function extractCloudSQL(gae, run) {
   if(gae['cloudsql-instance']) {
     run['service.yaml']['spec']['template']['metadata']['annotations']['run.googleapis.com/cloudsql-instances'] = [gae['project-id'], gae['region'], gae['cloudsql-instance']].join(':'); 
   }
+}
+
+function extractImageURL(gae, run) {
+  let imageName = gae['app.yaml']['service'] || 'image';
+  let projectName = gae['project-id'] || '<YOUR-PROJECT>';
+  
+  run['service.yaml']['spec']['template']['spec']['containers'][0]['image'] = `gcr.io/${projectName}/${imageName}`;
 }
 
 export {appToRun}
