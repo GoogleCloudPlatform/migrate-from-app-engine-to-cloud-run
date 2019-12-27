@@ -33,6 +33,7 @@ function appToRun(gaeService) {
     extractName,
     extractImageURL,
     extractEnvVars,
+    extractProjectIDEnvVar,
     extractMaxInstances,
     extractConcurrency,
     extractMemory,
@@ -58,13 +59,25 @@ function extractName(gae, run) {
 
 function extractEnvVars(gae, run) {
   if(gae['app.yaml']['env_variables']) {
-    const envArray = run['service.yaml']['spec']['template']['spec']['containers'][0]['env'] = [];
+    const container = run['service.yaml']['spec']['template']['spec']['containers'][0];
+    container['env'] = container['env'] || [];
     for (const key of Object.keys(gae['app.yaml']['env_variables'])) {
-      envArray.push({
+      container['env'].push({
         'name': key,
         'value': gae['app.yaml']['env_variables'][key]
       })
     }
+   }
+}
+
+function extractProjectIDEnvVar(gae, run) {
+  if(gae['project-id']) {
+    const container = run['service.yaml']['spec']['template']['spec']['containers'][0];
+    container['env'] = container['env'] || [];
+    container['env'].push({
+      'name': 'GOOGLE_CLOUD_PROJECT',
+      'value': gae['project-id']
+    })
    }
 }
 
