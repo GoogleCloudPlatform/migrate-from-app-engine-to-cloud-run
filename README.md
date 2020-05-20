@@ -23,6 +23,6 @@ Load the `app-to-run.js` module in your codebase with:
 import { appToRun } from './app-to-run.js';
 ```
 
-Then invoke `appToRun()` with an option containing the App Engine configuration. See [this example](https://github.com/GoogleCloudPlatform/app-engine-cloud-run-converter/blob/master/index.js#L28)
+Then invoke `appToRun()` with an object containing the App Engine configuration. See [this example](https://github.com/GoogleCloudPlatform/app-engine-cloud-run-converter/blob/master/index.js#L28)
 
 TODO: document the exact API when it is stable.
