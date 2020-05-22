@@ -51,6 +51,7 @@ function appToRun(gaeService) {
     extractEnvVars,
     extractProjectIDEnvVar,
     extractMaxInstances,
+    extractMinInstances,
     extractConcurrency,
     extractMemory,
     extractMigrateToSecondGen,
@@ -101,7 +102,7 @@ COPY . ./
 CMD [ "npm", "start" ]`,
 }
 
-  const firstGenRuntimes = ['python27', 'php55', 'go111'];
+const firstGenRuntimes = ['python27', 'php55', 'go111'];
 
 const firstGenMigrationGuides = {
 'go111': 'https://cloud.google.com/appengine/docs/standard/go/go-differences',
@@ -141,13 +142,19 @@ function extractProjectIDEnvVar(gae, run) {
 }
 
 function extractMaxInstances(gae, run) {
-  if(gae['app.yaml']['automatic_scaling'] && gae['app.yaml']['automatic_scaling']['max_instances']) {
+  if(gae['app.yaml']['automatic_scaling']?.['max_instances']) {
     run['service.yaml']['spec']['template']['metadata']['annotations']['autoscaling.knative.dev/maxScale'] = gae['app.yaml']['automatic_scaling']['max_instances'].toString(); 
    }
 }
 
+function extractMinInstances(gae, run) {
+  if(gae['app.yaml']['automatic_scaling']?.['min_instances']) {
+    run['service.yaml']['spec']['template']['metadata']['annotations']['autoscaling.knative.dev/minScale'] = gae['app.yaml']['automatic_scaling']['inx_instances'].toString(); 
+   }
+}
+
 function extractConcurrency(gae, run) {
-  if(gae['app.yaml']['automatic_scaling'] && gae['app.yaml']['automatic_scaling']['max_concurrent_requests']) {
+  if(gae['app.yaml']['automatic_scaling']?.['max_concurrent_requests']) {
     run['service.yaml']['spec']['template']['spec']['containerConcurrency'] = gae['app.yaml']['automatic_scaling']['max_concurrent_requests']; 
    }
 } 
@@ -185,8 +192,8 @@ function extractDockerfile(gae, run) {
 }
 
 function extractVPCAccess(gae, run){
-  if(gae['app.yaml']['vpc_access_connector']) {
-    // TODO
+  if(gae['app.yaml']['vpc_access_connector']?.['name']) {
+    run['service.yaml']['spec']['template']['metadata']['annotations']['run.googleapis.com/vpc-access-connector'] = gae['app.yaml']['vpc_access_connector']['name'];
   }
 }
 
