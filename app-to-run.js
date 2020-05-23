@@ -149,7 +149,7 @@ function extractMaxInstances(gae, run) {
 
 function extractMinInstances(gae, run) {
   if(gae['app.yaml']['automatic_scaling']?.['min_instances']) {
-    run['service.yaml']['spec']['template']['metadata']['annotations']['autoscaling.knative.dev/minScale'] = gae['app.yaml']['automatic_scaling']['inx_instances'].toString(); 
+    run['service.yaml']['spec']['template']['metadata']['annotations']['autoscaling.knative.dev/minScale'] = gae['app.yaml']['automatic_scaling']['min_instances'].toString(); 
    }
 }
 
