@@ -60,6 +60,7 @@ function appToRun(gaeService) {
     extractVPCAccess,
     extractCloudSQL,
     extractBuild,
+    extractStatic,
   ]
   
   for (const extractFunction of extractFunctions) {
@@ -187,18 +188,42 @@ function extractMigrateToSecondGen(gae, run) {
   // "api_version" was deprecated for secnd gen runtimes
   if(gae['app.yaml']['api_version'] || firstGenRuntimes.includes(runtime)) {
     run['migrate-to-second-gen'] = true;
-    run['warnings'] = [{
+    if(!run['warnings']) {
+      run['warnings'] = [];
+    }
+    run['warnings'].push({
       'message': 'You are using a first generation App Engine runtime, please migrate to a second generation App Engine runtime before migrating to Cloud Run. ',
       'link': {
         'href': firstGenMigrationGuides[runtime],
         'text': 'Migration guide',
       }
-    }];
+    });
   }
-}
+} 
 
 function extractBuild(gae, run) {
   run['gcloud'] = `gcloud alpha builds submit --pack image=${run['service.yaml']['spec']['template']['spec']['containers'][0]['image']} && gcloud beta run services replace service.yaml --region ${run['region']} --platform managed`;
+}
+
+function extractStatic(gae, run) {
+  let useStatic = false;
+  if(gae['app.yaml']['handlers']) {
+    for( const handler of gae['app.yaml']['handlers']) {
+      if(handler.static_dir || handler.static_files) {
+        useStatic = true;
+      }
+    }
+  }
+
+  if(useStatic) {
+    if(!run['warnings']) {
+      run['warnings'] = [];
+    }
+
+    run['warnings'].push({
+      'message': 'You are using App Engine static file handlers. Cloud Run does not provide support for static file serving. We recommend you to serve your static files from your code.',
+    })
+  }
 }
 
 function extractVPCAccess(gae, run){
