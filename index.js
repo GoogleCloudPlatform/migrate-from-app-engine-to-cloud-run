@@ -47,6 +47,7 @@ function appToRunDOM() {
   
   document.getElementById('serviceyaml').value = jsyaml.safeDump(runService['service.yaml']);
   document.getElementById('dockerfile').value = runService['Dockerfile'];
+  document.getElementById('gcloud').innerText = runService['gcloud'];
 }
 
 

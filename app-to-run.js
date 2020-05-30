@@ -56,9 +56,9 @@ function appToRun(gaeService) {
     extractMemory,
     extractCPU,
     extractMigrateToSecondGen,
-    extractDockerfile,
     extractVPCAccess,
     extractCloudSQL,
+    extractBuild,
   ]
   
   for (const extractFunction of extractFunctions) {
@@ -209,8 +209,9 @@ function extractMigrateToSecondGen(gae, run) {
   }
 }
 
-function extractDockerfile(gae, run) {
-  run['Dockerfile'] = runtimeToDockerfile[gae['app.yaml']['runtime']]
+function extractBuild(gae, run) {
+  run['Dockerfile'] = runtimeToDockerfile[gae['app.yaml']['runtime']];
+  run['gcloud'] = `$ gcloud builds submit --tag ${run['service.yaml']['spec']['template']['spec']['containers'][0]['image']} && gcloud beta run services replace service.yaml`;
 }
 
 function extractVPCAccess(gae, run){
