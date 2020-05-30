@@ -95,19 +95,26 @@ automatic_scaling:
 
   <h2>Migrating to Cloud Run</h2>
 
-  <div id="dockerfile-container" style="display: none;">
-    <p>Create a file named <code>Dockerfile</code> at the root of your source tree, with the following content:</p>
-    <label for="dockerfile"><code>Dockerfile</code>:</label>
-    <textarea id="dockerfile" class="file"></textarea>
+  <ul id="warnings" style="display: none;">
+  </ul>
+
+  <div id="to-run">
+
+    <div id="dockerfile-container" style="display: none;">
+        <p>Create a file named <code>Dockerfile</code> at the root of your source tree, with the following content:</p>
+        <label for="dockerfile"><code>Dockerfile</code>:</label>
+        <textarea id="dockerfile" class="file"></textarea>
+    </div>
+
+    <p>Create a file named <code>service.yaml</code> with the following content:</p>
+
+    <label for="serviceyaml"><code>service.yaml</code>:</label>
+    <textarea id="serviceyaml" class="yaml file"></textarea>
+
+    <p>To build and deploy to Cloud Run, run the following command:</p>
+    <pre><code id="gcloud"></code></pre>
+
   </div>
-
-  <p>Create a file named <code>service.yaml</code> with the following content:</p>
-
-  <label for="serviceyaml"><code>service.yaml</code>:</label>
-  <textarea id="serviceyaml" class="yaml file"></textarea>
-
-  <p>To build and deploy to Cloud Run, run the following command:</p>
-  <pre><code id="gcloud"></code></pre>
 
 </main>
 

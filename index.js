@@ -50,11 +50,34 @@ function appToRunDOM() {
     gaeService['cloudsql-instance'] = document.getElementById('gae-cloudsql-instance').value;
   };
 
-  console.log({gaeService});
-
   let runService = appToRun(gaeService);
 
-  console.log({runService});
+  if(runService['warnings']) {
+    document.getElementById('warnings').style.display = 'block';
+    document.getElementById('warnings').innerHTML = '';
+    for (const warning of runService['warnings']) {
+      const item = document.createElement('li');
+      item.innerText = warning.message;
+      if(warning.link) {
+        const link = document.createElement('a');
+        link.innerText = warning.link.text;
+        link.href = warning.link.href;
+        item.appendChild(link);
+      }
+      document.getElementById('warnings').appendChild(item);
+    }
+    document.createElement('li');
+  } else {
+    document.getElementById('warnings').style.display = 'none';
+    document.getElementById('warnings').innerHTML = '';
+  }
+
+
+  if(runService['migrate-to-second-gen']) {
+    document.getElementById('to-run').style.display = 'none';
+  } else {
+    document.getElementById('to-run').style.display = 'block';
+  }
   
   document.getElementById('serviceyaml').value = jsyaml.safeDump(runService['service.yaml']);
   if(runService['Dockerfile']) {

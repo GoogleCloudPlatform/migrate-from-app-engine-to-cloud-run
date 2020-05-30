@@ -187,7 +187,13 @@ function extractMigrateToSecondGen(gae, run) {
   // "api_version" was deprecated for secnd gen runtimes
   if(gae['app.yaml']['api_version'] || firstGenRuntimes.includes(runtime)) {
     run['migrate-to-second-gen'] = true;
-    run['migration-guide'] = firstGenMigrationGuides[runtime];
+    run['warnings'] = [{
+      'message': 'You are using a first generation App Engine runtime, please migrate to a second generation App Engine runtime before migrating to Cloud Run. ',
+      'link': {
+        'href': firstGenMigrationGuides[runtime],
+        'text': 'Migration guide',
+      }
+    }];
   }
 }
 
