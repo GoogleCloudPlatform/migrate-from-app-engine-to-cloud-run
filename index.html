@@ -29,7 +29,10 @@ limitations under the License.
     }  
     textarea.yaml {
       height: 300px;
-    }  
+    }
+    .disclaimer {
+      font-weight: bold;
+    }
   </style>
   <link rel="stylesheet" href="https://unpkg.com/awsm.css/dist/awsm.min.css">
 </head>
@@ -37,11 +40,13 @@ limitations under the License.
 <body>
 <header>
   <h1>App Engine to Cloud Run</h1>
-  <p>A tool to help you migrate from App Engine to Cloud Run</p>
+  <p>Helper tool to migrate an App Engine service to a Cloud Run service.</p>
+  <p>Data is never uploaded. All processing is happening client side in your browser. This tool is open source, see <a href="https://github.com/GoogleCloudPlatform/app-engine-cloud-run-converter">its code on GitHub</a>.</p>
+  <p class="disclaimer">This is not an officially supported Google product.</p>
 </header>
 
 <main>
-  <h2>Your App Engine app</h2>
+  <h2>Your App Engine service</h2>
   <form id="gae">
 
     <label for="appyaml"><code>app.yaml</code>:</label>
