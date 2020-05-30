@@ -46,6 +46,7 @@ function appToRun(gaeService) {
   };
 
   const extractFunctions = [
+    extractRegion,
     extractName,
     extractImageURL,
     extractEnvVars,
@@ -75,6 +76,22 @@ const firstGenMigrationGuides = {
 'python27': 'https://cloud.google.com/appengine/docs/standard/python/',
 'php55': 'https://cloud.google.com/appengine/docs/standard/php7/php-differences',
 // (Java does not use an app.yaml): 'https://cloud.google.com/appengine/docs/standard/java11/java-differences',
+}
+
+function gaeRegionToGCPRegion(region) {
+  if(region === 'us-central') { return 'us-central1'; }
+  if(region === 'europe-west') { return 'europe-west1'; }
+  return region;
+}
+
+function extractRegion(gae, run) {
+  run['region'] = gaeRegionToGCPRegion(gae['region']) || 'us-central1';
+
+  if(!run['service.yaml']['metadata']['labels']) {
+    run['service.yaml']['metadata']['labels'] = [];
+  }
+
+  run['service.yaml']['metadata']['labels'].push({'cloud.googleapis.com/location': run['region']})
 }
 
 function extractName(gae, run) {
@@ -175,7 +192,7 @@ function extractMigrateToSecondGen(gae, run) {
 }
 
 function extractBuild(gae, run) {
-  run['gcloud'] = `gcloud alpha builds submit --pack image=${run['service.yaml']['spec']['template']['spec']['containers'][0]['image']} && gcloud beta run services replace service.yaml`;
+  run['gcloud'] = `gcloud alpha builds submit --pack image=${run['service.yaml']['spec']['template']['spec']['containers'][0]['image']} && gcloud beta run services replace service.yaml --region ${run['region']} --platform managed`;
 }
 
 function extractVPCAccess(gae, run){
@@ -186,7 +203,7 @@ function extractVPCAccess(gae, run){
 
 function extractCloudSQL(gae, run) {
   if(gae['cloudsql-instance']) {
-    run['service.yaml']['spec']['template']['metadata']['annotations']['run.googleapis.com/cloudsql-instances'] = [gae['project-id'], gae['region'], gae['cloudsql-instance']].join(':'); 
+    run['service.yaml']['spec']['template']['metadata']['annotations']['run.googleapis.com/cloudsql-instances'] = [gae['project-id'], run['region'], gae['cloudsql-instance']].join(':'); 
   }
 }
 
