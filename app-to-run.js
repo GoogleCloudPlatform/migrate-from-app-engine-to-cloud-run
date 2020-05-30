@@ -68,41 +68,6 @@ function appToRun(gaeService) {
   return runService;
 }
 
-
-const runtimeToDockerfile = {
-'nodejs': 
-`FROM node:slim
-WORKDIR /usr/src/app
-COPY package*.json ./
-RUN npm install --only=production
-COPY . ./
-CMD [ "npm", "start" ]`,
-
-'nodejs8': 
-`FROM node:8-slim
-WORKDIR /usr/src/app
-COPY package*.json ./
-RUN npm install --only=production
-COPY . ./
-CMD [ "npm", "start" ]`,
-
-'nodejs10': 
-`FROM node:10-slim
-WORKDIR /usr/src/app
-COPY package*.json ./
-RUN npm install --only=production
-COPY . ./
-CMD [ "npm", "start" ]`,
-
-'nodejs12': 
-`FROM node:12-slim
-WORKDIR /usr/src/app
-COPY package*.json ./
-RUN npm install --only=production
-COPY . ./
-CMD [ "npm", "start" ]`,
-}
-
 const firstGenRuntimes = ['python27', 'php55', 'go111'];
 
 const firstGenMigrationGuides = {
@@ -210,8 +175,7 @@ function extractMigrateToSecondGen(gae, run) {
 }
 
 function extractBuild(gae, run) {
-  run['Dockerfile'] = runtimeToDockerfile[gae['app.yaml']['runtime']];
-  run['gcloud'] = `$ gcloud builds submit --tag ${run['service.yaml']['spec']['template']['spec']['containers'][0]['image']} && gcloud beta run services replace service.yaml`;
+  run['gcloud'] = `gcloud alpha builds submit --pack image=${run['service.yaml']['spec']['template']['spec']['containers'][0]['image']} && gcloud beta run services replace service.yaml`;
 }
 
 function extractVPCAccess(gae, run){

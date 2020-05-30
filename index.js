@@ -46,7 +46,12 @@ function appToRunDOM() {
   console.log({runService});
   
   document.getElementById('serviceyaml').value = jsyaml.safeDump(runService['service.yaml']);
-  document.getElementById('dockerfile').value = runService['Dockerfile'];
+  if(runService['Dockerfile']) {
+    document.getElementById('dockerfile-container').style.display = 'block';
+    document.getElementById('dockerfile').value = runService['Dockerfile'];
+  } else {
+    document.getElementById('dockerfile-container').style.display = 'none';
+  }
   document.getElementById('gcloud').innerText = runService['gcloud'];
 }
 
