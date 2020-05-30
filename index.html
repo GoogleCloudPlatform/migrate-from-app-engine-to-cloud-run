@@ -87,13 +87,15 @@ automatic_scaling:
       I use Cloud SQL
     </label>
 
-    <label for="gae-cloudsql-instance">Cloud SQL instance name:</label>
-    <input type="text" id="gae-cloudsql-instance" name="gae-cloudsql-instance" class="input">
+    <div id="gae-cloudsql-instance-container" style="display: none;">
+      <label for="gae-cloudsql-instance">Cloud SQL instance name:</label>
+      <input type="text" id="gae-cloudsql-instance" name="gae-cloudsql-instance" class="input">
+    </div>
   </form>
 
   <h2>Migrating to Cloud Run</h2>
 
-  <div id="dockerfile-container">
+  <div id="dockerfile-container" style="display: none;">
     <p>Create a file named <code>Dockerfile</code> at the root of your source tree, with the following content:</p>
     <label for="dockerfile"><code>Dockerfile</code>:</label>
     <textarea id="dockerfile" class="file"></textarea>

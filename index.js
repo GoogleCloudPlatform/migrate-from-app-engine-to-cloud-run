@@ -22,7 +22,18 @@ function bindListeners() {
   const inputs = document.querySelectorAll('.input');
   for(const input of inputs) {
     input.addEventListener('input', appToRunDOM);
-  }   
+  }
+
+  const sqlcheckbox = document.getElementById('gae-cloudsql-use');
+  
+  sqlcheckbox.addEventListener('change', () => {
+    if(sqlcheckbox.checked) {
+      document.getElementById('gae-cloudsql-instance-container').style.display = 'block';
+    } else {
+      document.getElementById('gae-cloudsql-instance-container').style.display = 'none';
+    }
+});
+
 }
 
 function appToRunDOM() {
