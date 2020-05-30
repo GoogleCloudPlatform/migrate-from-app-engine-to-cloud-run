@@ -54,6 +54,7 @@ function appToRun(gaeService) {
     extractMinInstances,
     extractConcurrency,
     extractMemory,
+    extractCPU,
     extractMigrateToSecondGen,
     extractDockerfile,
     extractVPCAccess,
@@ -166,7 +167,8 @@ function extractMemory(gae, run) {
     'F1': '256Mi',
     'F2': '512Mi',
     'F4': '1Gi',
-    'F4_HIGHMEM': '2Gi', 
+    'F4_HIGHMEM': '2Gi',
+    'F4_1G': '2Gi',
   }
 
   if(gae['app.yaml']['instance_class']) {
@@ -175,6 +177,26 @@ function extractMemory(gae, run) {
     container['resources'] = container['resources'] || {'limits': {}};
 
     container['resources']['limits']['memory'] = instanceClassMemory[gae['app.yaml']['instance_class']]; 
+   }
+}
+
+function extractCPU(gae, run) {
+  // see https://cloud.google.com/appengine/docs/standard/#instance_classes
+
+  const instanceClassCPU = {
+    'F1': '1',
+    'F2': '1',
+    'F4': '2',
+    'F4_HIGHMEM': '2', 
+    'F4_1G': '2', 
+  }
+
+  if(gae['app.yaml']['instance_class']) {
+    const container = run['service.yaml']['spec']['template']['spec']['containers'][0];
+    
+    container['resources'] = container['resources'] || {'limits': {}};
+
+    container['resources']['limits']['cpu'] = instanceClassCPU[gae['app.yaml']['instance_class']]; 
    }
 }
 
