@@ -1,0 +1,178 @@
+:root {
+    --gcp-blue: hsl(214, 82%, 51%);
+    --light-blue: hsl(214, 100%, 85%); 
+    --primary-light: var(--light-blue);
+    --primary-dark: var(--gcp-blue);
+    --width: 40rem;
+}
+
+html {
+  font-family: Roboto,Helvetica,Arial,sans-serif;
+  line-height: 1.4;
+}
+@media (prefers-color-scheme: dark) {
+  html {
+    background-color: hsl(0, 0%, 7%);
+    color: #FFFFFF;
+  }
+}
+
+body{
+  margin: 1.2em;
+  font-size: 1rem;
+}
+
+header{	
+  max-width: var(--width);
+  margin-bottom: 3rem;
+}
+
+header, main {	
+  margin: 0 auto;	
+}
+
+ul, ol{
+  margin-top:0;
+  padding-top:0;
+  padding-left:2em;
+}
+
+h1{
+  font-size: 2.5em;
+}
+  
+h2{
+  font-size: 1.75em;
+}
+
+h3{
+  font-size: 1.25em;
+}
+
+a{
+  color:#0064c1;
+}
+a:visited{
+  color:#8d39d0;
+}
+a:hover, a:active{
+  outline-width:0;
+}
+a:hover{
+  color:#f00000;
+}
+@media (prefers-color-scheme: dark) {
+  a{
+    color: hsla(209, 100%, 85%, 1);
+  }
+  a:visited{
+    color: hsla(273, 62%, 85%, 1);
+  }
+}
+
+h1 a, h2 a, h3 a,
+h1 a:visited, h2 a:visited, h3 a:visited {
+  color: #000000;
+  text-decoration: none;
+}
+@media (prefers-color-scheme: dark) {
+  h1 a, h2 a, h3 a,
+  h1 a:visited, h2 a:visited, h3 a:visited {
+    color: #FFFFFF;
+  }
+}
+
+h1 a:hover, h2 a:hover, h3 a:hover {
+  color: #444444;
+}
+
+textarea.file,
+code, kbd, var, samp{
+  font-family: Consolas, "Lucida Console", Monaco, monospace;
+  font-style: normal;
+  font-size: 0.8rem;
+}
+
+pre{
+  overflow-x:auto;
+  font-size:0.8em;
+  background:linear-gradient(rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.15) 100%) 0 0, linear-gradient(rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.15) 100%) 100% 0;
+  background-attachment:scroll, scroll;
+  background-size:1px 100%, 1px 100%;
+  background-repeat:no-repeat, no-repeat;
+}
+
+pre > code{
+  display:inline-block;
+  overflow-x:visible;
+  box-sizing:border-box;
+  min-width:100%;
+  border-right:3px solid white;
+  border-left:1px solid white;
+}
+
+select, label{
+  display:block;
+}
+label:not(:first-child){
+  margin-top:1em;
+}
+p label{
+  display:inline;
+}
+p label + label{
+  margin-left:1em;
+}
+select, input[type], textarea{
+  margin-bottom:1em;
+}
+input[type=checkbox], input[type=radio]{
+  margin-bottom:0;
+}
+
+textarea.yaml {
+  height: 20rem;
+  width: 80%;
+}
+.disclaimer {
+    font-weight: bold;
+}
+@media (prefers-color-scheme: dark) {
+  textarea, input {
+    background-color: hsl(0, 0%, 20%);
+    color: white;
+  }
+}
+
+h1 {
+  background-repeat: no-repeat;
+  background-image: url("images/app-engine-to-cloud-run.svg");
+  background-size: auto 6rem;
+  background-position: 50% 0;
+  padding-top: 6rem;
+  text-align: center;
+}
+
+h2.gae, h2.run {
+  background-repeat: no-repeat;
+  background-size: contain;
+  padding-left: 3rem;
+}
+
+h2.gae {
+  background-image: url("images/app-engine.svg");
+}
+
+h2.run {
+  background-image: url("images/cloud-run.svg");
+}
+
+main {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.group {
+  width: var(--width);
+}

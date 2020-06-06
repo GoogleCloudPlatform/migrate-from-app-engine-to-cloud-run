@@ -17,25 +17,11 @@ limitations under the License.
 <html lang="en">
 <head>
   <title>App Engine to Cloud Run</title>
-  <style>
-    :root {
-      --gcp-blue: hsl(214, 82%, 51%);
-      --light-blue: hsl(214, 100%, 85%); 
-      --primary-light: var(--light-blue);
-      --primary-dark: var(--gcp-blue);
-    }
-    textarea.file {
-      font-family: monospace;
-      font-size: 0.8em;
-    }  
-    textarea.yaml {
-      height: 300px;
-    }
-    .disclaimer {
-      font-weight: bold;
-    }
-  </style>
-  <link rel="stylesheet" href="https://unpkg.com/awsm.css/dist/awsm.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Helper tool to migrate an App Engine service to a Cloud Run service.">
+  <meta name="theme-color" content="#1c74e9">
+
+  <link rel="stylesheet" href="/style.css">
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="App Engine to Cloud Run">
@@ -69,11 +55,11 @@ limitations under the License.
 </header>
 
 <main>
-  <h2>Your App Engine service</h2>
-  <form id="gae">
-
-    <label for="appyaml"><code>app.yaml</code>:</label>
-    <textarea id="appyaml" class="file yaml input">
+  <div class="group">
+    <h2 class="gae">Your App Engine service</h2>
+    <form id="gae">
+        <label for="appyaml"><code>app.yaml</code>:</label>
+        <textarea id="appyaml" class="file yaml input">
 runtime: nodejs10
 service: my-service
 
@@ -81,57 +67,59 @@ instance_class: F2
 
 handlers:
 - url: /.*
-  script: auto
-  secure: always
-  redirect_http_response_code: 301
+script: auto
+secure: always
+redirect_http_response_code: 301
 
 env_variables:
-  LIMIT: 100
-  QUEUE_ID: 'emails'
+LIMIT: 100
+QUEUE_ID: 'emails'
 
 automatic_scaling:
-  max_concurrent_requests: 80
-  max_instances: 1
-    </textarea>
+max_concurrent_requests: 80
+max_instances: 1
+        </textarea>
 
-    <label for="project-id">GCP Project ID:</label>
-    <input type="text" id="project-id" name="project-id" class="input">
+        <label for="project-id">GCP Project ID:</label>
+        <input type="text" id="project-id" name="project-id" class="input">
 
-    <label for="region">App Engine region:</label>
-    <input type="text" id="region" name="region" class="input">
+        <label for="region">App Engine region:</label>
+        <input type="text" id="region" name="region" class="input">
 
-    <label for="gae-cloudsql-use">
-      <input type="checkbox" id="gae-cloudsql-use" name="gae-cloudsql-use" class="input">
-      I use Cloud SQL
-    </label>
+        <label for="gae-cloudsql-use">
+        <input type="checkbox" id="gae-cloudsql-use" name="gae-cloudsql-use" class="input">
+        I use Cloud SQL
+        </label>
 
-    <div id="gae-cloudsql-instance-container" style="display: none;">
-      <label for="gae-cloudsql-instance">Cloud SQL instance name:</label>
-      <input type="text" id="gae-cloudsql-instance" name="gae-cloudsql-instance" class="input">
+        <div id="gae-cloudsql-instance-container" style="display: none;">
+        <label for="gae-cloudsql-instance">Cloud SQL instance name:</label>
+        <input type="text" id="gae-cloudsql-instance" name="gae-cloudsql-instance" class="input">
+        </div>
+    </form>
+  </div>
+
+  <div class="group">
+    <h2 class="run">Migrating to Cloud Run</h2>
+
+    <ul id="warnings" style="display: none;">
+    </ul>
+
+    <div id="to-run">
+
+        <div id="dockerfile-container" style="display: none;">
+            <p>Create a file named <code>Dockerfile</code> at the root of your source tree, with the following content:</p>
+            <label for="dockerfile"><code>Dockerfile</code>:</label>
+            <textarea id="dockerfile" class="file"></textarea>
+        </div>
+
+        <p>Create a file named <code>service.yaml</code> with the following content:</p>
+        <label for="serviceyaml"><code>service.yaml</code>:</label>
+        <textarea id="serviceyaml" class="yaml file"></textarea>
+        
+        <p>To build and deploy to Cloud Run, run the following command:</p>
+        <pre><code id="gcloud"></code></pre>
+
     </div>
-  </form>
-
-  <h2>Migrating to Cloud Run</h2>
-
-  <ul id="warnings" style="display: none;">
-  </ul>
-
-  <div id="to-run">
-
-    <div id="dockerfile-container" style="display: none;">
-        <p>Create a file named <code>Dockerfile</code> at the root of your source tree, with the following content:</p>
-        <label for="dockerfile"><code>Dockerfile</code>:</label>
-        <textarea id="dockerfile" class="file"></textarea>
-    </div>
-
-    <p>Create a file named <code>service.yaml</code> with the following content:</p>
-
-    <label for="serviceyaml"><code>service.yaml</code>:</label>
-    <textarea id="serviceyaml" class="yaml file"></textarea>
-
-    <p>To build and deploy to Cloud Run, run the following command:</p>
-    <pre><code id="gcloud"></code></pre>
-
   </div>
 
 </main>
