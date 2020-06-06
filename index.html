@@ -57,9 +57,10 @@ limitations under the License.
 <main>
   <div class="group">
     <h2 class="gae">Your App Engine service</h2>
+    <p>Provide details of your App Engine configuration:</p>
     <form id="gae">
         <label for="appyaml"><code>app.yaml</code>:</label>
-        <textarea id="appyaml" class="file yaml input">
+        <textarea id="appyaml" class="file yaml input" spellcheck="false">
 runtime: nodejs10
 service: my-service
 
@@ -114,7 +115,7 @@ max_instances: 1
 
         <p>Create a file named <code>service.yaml</code> with the following content:</p>
         <label for="serviceyaml"><code>service.yaml</code>:</label>
-        <textarea id="serviceyaml" class="yaml file"></textarea>
+        <textarea id="serviceyaml" class="yaml file" spellcheck="false"></textarea>
         
         <p>To build and deploy to Cloud Run, run the following command:</p>
         <pre><code id="gcloud"></code></pre>
