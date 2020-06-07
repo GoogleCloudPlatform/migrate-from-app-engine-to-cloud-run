@@ -1,9 +1,5 @@
 :root {
-    --gcp-blue: hsl(214, 82%, 51%);
-    --light-blue: hsl(214, 100%, 85%); 
-    --primary-light: var(--light-blue);
-    --primary-dark: var(--gcp-blue);
-    --width: 40rem;
+  --base-width: 35rem;
 }
 
 html {
@@ -23,7 +19,7 @@ body{
 }
 
 header{	
-  max-width: var(--width);
+  max-width: var(--base-width);
   margin-bottom: 3rem;
 }
 
@@ -132,7 +128,7 @@ input[type=checkbox], input[type=radio]{
 
 textarea.yaml {
   height: 20rem;
-  width: 80%;
+  width: 100%;
 }
 .disclaimer {
     font-weight: bold;
@@ -167,12 +163,25 @@ h2.run {
   background-image: url("images/cloud-run.svg");
 }
 
+
 main {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-evenly;
 }
 
 .group {
-  width: var(--width);
+  width: var(--base-width);
+}
+
+@media (max-width: calc(2* 35rem)) {
+  main {
+    display: block;
+  }
+
+  .group {
+    max-width: var(--base-width);
+    width: auto;
+  }
+
 }
