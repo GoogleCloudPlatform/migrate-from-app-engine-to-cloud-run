@@ -31,7 +31,9 @@ function appToRun(gaeService) {
       'spec': {
         'template': {
           'metadata': {
-            'annotations': {}
+            'annotations': {
+              'migrated-from': 'app-engine' 
+            }
           },
           'spec': {
             'containers': [
