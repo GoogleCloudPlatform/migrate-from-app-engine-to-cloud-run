@@ -14,7 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-// app.yaml reference: https://cloud.google.com/appengine/docs/standard/nodejs/config/appref
+// app.yaml standard reference: https://cloud.google.com/appengine/docs/standard/nodejs/config/appref
+// app.yaml flex reference: https://cloud.google.com/appengine/docs/flexible/nodejs/reference/app-yaml
 // service.yaml reference: https://github.com/knative/docs/blob/master/docs/serving/spec/knative-api-specification-1.0.md
 
 /**
@@ -131,19 +132,25 @@ function extractProjectIDEnvVar(gae, run) {
 function extractMaxInstances(gae, run) {
   if(gae['app.yaml']['automatic_scaling']?.['max_instances']) {
     run['service.yaml']['spec']['template']['metadata']['annotations']['autoscaling.knative.dev/maxScale'] = gae['app.yaml']['automatic_scaling']['max_instances'].toString(); 
-   }
+  }
+  if(gae['app.yaml']['automatic_scaling']?.['max_num_instances']) {
+    run['service.yaml']['spec']['template']['metadata']['annotations']['autoscaling.knative.dev/maxScale'] = gae['app.yaml']['automatic_scaling']['max_num_instances'].toString(); 
+  }
 }
 
 function extractMinInstances(gae, run) {
   if(gae['app.yaml']['automatic_scaling']?.['min_instances']) {
     run['service.yaml']['spec']['template']['metadata']['annotations']['autoscaling.knative.dev/minScale'] = gae['app.yaml']['automatic_scaling']['min_instances'].toString(); 
-   }
+  }
+  if(gae['app.yaml']['automatic_scaling']?.['min_num_instances']) {
+    run['service.yaml']['spec']['template']['metadata']['annotations']['autoscaling.knative.dev/minScale'] = gae['app.yaml']['automatic_scaling']['min_num_instances'].toString(); 
+  }
 }
 
 function extractConcurrency(gae, run) {
   if(gae['app.yaml']['automatic_scaling']?.['max_concurrent_requests']) {
     run['service.yaml']['spec']['template']['spec']['containerConcurrency'] = gae['app.yaml']['automatic_scaling']['max_concurrent_requests']; 
-   }
+  }
 } 
 
 function extractMemory(gae, run) {
@@ -157,13 +164,22 @@ function extractMemory(gae, run) {
     'F4_1G': '2Gi',
   }
 
-  if(gae['app.yaml']['instance_class']) {
-    const container = run['service.yaml']['spec']['template']['spec']['containers'][0];
-    
-    container['resources'] = container['resources'] || {'limits': {}};
+  function flexMemory(memory) {
+    // Cloud Run max memory is 2GiB
+    return Math.min(memory, 2);
+  }
 
+  const container = run['service.yaml']['spec']['template']['spec']['containers'][0];
+
+  if(gae['app.yaml']['instance_class']) {    
+    container['resources'] = container['resources'] || {'limits': {}};
     container['resources']['limits']['memory'] = instanceClassMemory[gae['app.yaml']['instance_class']]; 
    }
+
+  if(gae['app.yaml']['resources']?.['memory_gb']) {
+    container['resources'] = container['resources'] || {'limits': {}};
+    container['resources']['limits']['memory'] = flexMemory(gae['app.yaml']['resources']['memory_gb']) + 'Gi';
+  }
 }
 
 function extractCPU(gae, run) {
@@ -177,13 +193,23 @@ function extractCPU(gae, run) {
     'F4_1G': '2', 
   }
 
-  if(gae['app.yaml']['instance_class']) {
-    const container = run['service.yaml']['spec']['template']['spec']['containers'][0];
-    
-    container['resources'] = container['resources'] || {'limits': {}};
+  function flexCPU(cpu) {
+    // Flex cpu is an integer. 
+    // Cloud Run max CPU is 2
+    return Math.min(cpu, 2);
+  }
 
+  const container = run['service.yaml']['spec']['template']['spec']['containers'][0];
+
+  if(gae['app.yaml']['instance_class']) {
+    container['resources'] = container['resources'] || {'limits': {}};
     container['resources']['limits']['cpu'] = instanceClassCPU[gae['app.yaml']['instance_class']]; 
    }
+
+   if(gae['app.yaml']['resources']?.['cpu']) {
+    container['resources'] = container['resources'] || {'limits': {}};
+    container['resources']['limits']['cpu'] = flexCPU(gae['app.yaml']['resources']['cpu']);
+  }
 }
 
 function extractMigrateToSecondGen(gae, run) {
