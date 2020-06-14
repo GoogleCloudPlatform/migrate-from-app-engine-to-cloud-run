@@ -72,11 +72,12 @@ function appToRun(gaeService) {
   return runService;
 }
 
-const firstGenRuntimes = ['python27', 'php55', 'go111'];
+const firstGenRuntimes = ['go111', 'python', 'python27', 'php55'];
 
 const firstGenMigrationGuides = {
 'go111': 'https://cloud.google.com/appengine/docs/standard/go/go-differences',
 'python27': 'https://cloud.google.com/appengine/docs/standard/python/',
+'python': 'https://cloud.google.com/appengine/docs/standard/python/',
 'php55': 'https://cloud.google.com/appengine/docs/standard/php7/php-differences',
 // (Java does not use an app.yaml): 'https://cloud.google.com/appengine/docs/standard/java11/java-differences',
 }
