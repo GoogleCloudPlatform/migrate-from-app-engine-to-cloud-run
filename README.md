@@ -6,8 +6,6 @@ Data is never uploaded. All processing is happening client side.
 
 This is not an officially supported Google product.
 
-[![App Engine to Cloud Run on Youtube](https://img.youtube.com/vi/XXP6QIS8VME/0.jpg)](https://www.youtube.com/watch?v=XXP6QIS8VME)
-
 ## How to use
 
 ### User interface
@@ -28,3 +26,9 @@ import { appToRun } from './app-to-run.js';
 Then invoke `appToRun()` with an object containing the App Engine configuration. See [this example](https://github.com/GoogleCloudPlatform/app-engine-cloud-run-converter/blob/master/index.js#L28)
 
 TODO: document the exact API when it is stable.
+
+## Demo
+
+See it in action in this end to end demo on Youtube:
+
+[![App Engine to Cloud Run on Youtube](https://img.youtube.com/vi/XXP6QIS8VME/0.jpg)](https://www.youtube.com/watch?v=XXP6QIS8VME)
