@@ -93,10 +93,10 @@ function extractRegion(gae, run) {
   run['region'] = gaeRegionToGCPRegion(gae['region']) || 'us-central1';
 
   if(!run['service.yaml']['metadata']['labels']) {
-    run['service.yaml']['metadata']['labels'] = [];
+    run['service.yaml']['metadata']['labels'] = {};
   }
 
-  run['service.yaml']['metadata']['labels'].push({'cloud.googleapis.com/location': run['region']})
+  run['service.yaml']['metadata']['labels']['cloud.googleapis.com/location'] = run['region'];
 }
 
 function extractName(gae, run) {
