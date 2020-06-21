@@ -27,15 +27,14 @@ function appToRun(gaeService) {
       'apiVersion': 'serving.knative.dev/v1',
       'kind': 'Service',
       'metadata': {
-        'name' : 'default'
+        'name' : 'default',
+        'labels': {
+          'migrated-from': 'app-engine'
+        }
       },
       'spec': {
         'template': {
-          'metadata': {
-            'annotations': {
-              'migrated-from': 'app-engine' 
-            }
-          },
+          'metadata': {},
           'spec': {
             'containers': [
               {
