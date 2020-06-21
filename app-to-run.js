@@ -40,7 +40,7 @@ function appToRun(gaeService) {
           'spec': {
             'containers': [
               {
-                'image': 'gcr.io/YOUR-PROJECT/image'
+                'image': 'gcr.io/<YOUR-PROJECT>/image'
               }
             ]
           }
@@ -50,6 +50,7 @@ function appToRun(gaeService) {
   };
 
   const extractFunctions = [
+    extractServiceAccount,
     extractRegion,
     extractName,
     extractImageURL,
@@ -89,6 +90,15 @@ function gaeRegionToGCPRegion(region) {
   if(region === 'us-central') { return 'us-central1'; }
   if(region === 'europe-west') { return 'europe-west1'; }
   return region;
+}
+
+function getProject(gae) {
+    return gae['project-id'] || '<YOUR-PROJECT>';
+}
+
+function extractServiceAccount(gae, run) {
+  // App Engine uses the App Engine default service account, while Cloud Run uses the Compute Engine default service account
+  run['service.yaml']['spec']['template']['spec']['serviceAccountName'] = `${getProject(gae)}@appspot.gserviceaccount.com`
 }
 
 function extractRegion(gae, run) {
@@ -292,9 +302,8 @@ function extractCloudSQL(gae, run) {
 
 function extractImageURL(gae, run) {
   let imageName = gae['app.yaml']['service'] || 'image';
-  let projectName = gae['project-id'] || '<YOUR-PROJECT>';
   
-  run['service.yaml']['spec']['template']['spec']['containers'][0]['image'] = `gcr.io/${projectName}/${imageName}`;
+  run['service.yaml']['spec']['template']['spec']['containers'][0]['image'] = `gcr.io/${getProject(gae)}/${imageName}`;
 }
 
 function extractAllowUnauthenticated(gae, run) {
