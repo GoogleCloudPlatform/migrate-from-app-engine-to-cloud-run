@@ -78,8 +78,8 @@ const firstGenRuntimes = ['go111', 'python', 'python27', 'php55'];
 
 const firstGenMigrationGuides = {
 'go111': 'https://cloud.google.com/appengine/docs/standard/go/go-differences',
-'python27': 'https://cloud.google.com/appengine/docs/standard/python/',
-'python': 'https://cloud.google.com/appengine/docs/standard/python/',
+'python27': 'https://cloud.google.com/appengine/docs/standard/python/migrate-to-python3',
+'python': 'https://cloud.google.com/appengine/docs/standard/python/migrate-to-python3',
 'php55': 'https://cloud.google.com/appengine/docs/standard/php7/php-differences',
 // (Java does not use an app.yaml): 'https://cloud.google.com/appengine/docs/standard/java11/java-differences',
 }
@@ -221,13 +221,15 @@ function extractMigrateToSecondGen(gae, run) {
     if(!run['warnings']) {
       run['warnings'] = [];
     }
-    run['warnings'].push({
-      'message': 'You are using a first generation App Engine runtime, please migrate to a second generation App Engine runtime before migrating to Cloud Run. ',
-      'link': {
+
+    let warning = {'message': 'You are using a first generation App Engine runtime, please migrate to a second generation App Engine runtime before migrating to Cloud Run. '};
+    if(firstGenMigrationGuides[runtime]) {
+      warning.link = {
         'href': firstGenMigrationGuides[runtime],
         'text': 'Migration guide',
       }
-    });
+    }
+    run['warnings'].push(warning);
   }
 } 
 
