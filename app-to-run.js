@@ -266,6 +266,22 @@ function extractCloudSQL(gae, run) {
   if(gae['cloudsql-instance']) {
     run['service.yaml']['spec']['template']['metadata']['annotations']['run.googleapis.com/cloudsql-instances'] = [gae['project-id'], run['region'], gae['cloudsql-instance']].join(':'); 
   }
+
+  let enableAPIHref = 'https://console.developers.google.com/apis/api/sqladmin.googleapis.com/overview';
+  if(gae['project-id']) {
+    enableAPIHref += '?project=' + gae['project-id'];
+  }
+
+  if(!run['warnings']) {
+    run['warnings'] = [];
+  }
+  run['warnings'].push({
+    'message': 'You must enable the Cloud SQL Admin API. ',
+    'link': {
+      'href': enableAPIHref,
+      'text': 'Enable API',
+    }
+  });
 }
 
 function extractImageURL(gae, run) {
