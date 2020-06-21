@@ -87,6 +87,7 @@ function appToRunDOM() {
     document.getElementById('dockerfile-container').style.display = 'none';
   }
   document.getElementById('gcloud').innerText = runService['gcloud'];
+  document.getElementById('make-public').innerText = runService['make-public'];
 }
 
 

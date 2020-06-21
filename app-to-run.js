@@ -65,6 +65,7 @@ function appToRun(gaeService) {
     extractCloudSQL,
     extractBuild,
     extractStatic,
+    extractAllowUnauthenticated,
   ]
   
   for (const extractFunction of extractFunctions) {
@@ -294,6 +295,10 @@ function extractImageURL(gae, run) {
   let projectName = gae['project-id'] || '<YOUR-PROJECT>';
   
   run['service.yaml']['spec']['template']['spec']['containers'][0]['image'] = `gcr.io/${projectName}/${imageName}`;
+}
+
+function extractAllowUnauthenticated(gae, run) {
+  run['make-public'] = `gcloud run services add-iam-policy-binding ${run['service.yaml']['metadata']['name']} --member="allUsers" --role="roles/run.invoker --region ${run['service.yaml']['metadata']['labels']['cloud.googleapis.com/location']} --platform managed `;
 }
 
 export {appToRun}

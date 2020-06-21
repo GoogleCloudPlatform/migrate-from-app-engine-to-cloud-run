@@ -117,9 +117,12 @@ automatic_scaling:
         <p>Create a file named <code>service.yaml</code> with the following content:</p>
         <label for="serviceyaml"><code>service.yaml</code>:</label>
         <textarea id="serviceyaml" class="yaml file" spellcheck="false"></textarea>
-        
+
         <p>To build and deploy to Cloud Run, run the following command:</p>
         <pre><code id="gcloud"></code></pre>
+
+        <p>Contrary to App Engine, Cloud Run services are private by default. To make your new service public, you need to run the following command once:</p>
+        <pre><code id="make-public"></code></pre>
 
     </div>
   </div>
