@@ -67,6 +67,7 @@ function appToRun(gaeService) {
     extractBuild,
     extractStatic,
     extractAllowUnauthenticated,
+    extractEntrypoint,
   ]
   
   for (const extractFunction of extractFunctions) {
@@ -308,6 +309,14 @@ function extractImageURL(gae, run) {
 
 function extractAllowUnauthenticated(gae, run) {
   run['make-public'] = `gcloud run services add-iam-policy-binding ${run['service.yaml']['metadata']['name']} --member="allUsers" --role="roles/run.invoker" --region ${run['service.yaml']['metadata']['labels']['cloud.googleapis.com/location']} --platform managed `;
+}
+
+function extractEntrypoint(gae, run) {
+  let entrypoint = gae['app.yaml']['entrypoint'];
+
+  if(entrypoint) {
+    run['Procfile'] = `web: ${entrypoint}`;
+  }
 }
 
 export {appToRun}

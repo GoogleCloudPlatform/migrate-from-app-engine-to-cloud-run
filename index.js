@@ -80,12 +80,21 @@ function appToRunDOM() {
   }
   
   document.getElementById('serviceyaml').value = jsyaml.safeDump(runService['service.yaml']);
+
   if(runService['Dockerfile']) {
     document.getElementById('dockerfile-container').style.display = 'block';
     document.getElementById('dockerfile').value = runService['Dockerfile'];
   } else {
     document.getElementById('dockerfile-container').style.display = 'none';
   }
+
+  if(runService['Procfile']) {
+    document.getElementById('procfile-container').style.display = 'block';
+    document.getElementById('procfile').value = runService['Procfile'];
+  } else {
+    document.getElementById('procfile-container').style.display = 'none';
+  }
+  
   document.getElementById('gcloud').innerText = runService['gcloud'];
   document.getElementById('make-public').innerText = runService['make-public'];
 }
