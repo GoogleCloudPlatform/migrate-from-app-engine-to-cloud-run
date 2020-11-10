@@ -246,7 +246,7 @@ function extractMigrateToSecondGen(gae, run) {
 } 
 
 function extractBuild(gae, run) {
-  run['gcloud'] = `gcloud alpha builds submit --pack image=${run['service.yaml']['spec']['template']['spec']['containers'][0]['image']} && gcloud beta run services replace service.yaml --region ${run['region']} --platform managed`;
+  run['gcloud'] = `gcloud builds submit --pack image=${run['service.yaml']['spec']['template']['spec']['containers'][0]['image']} && gcloud beta run services replace service.yaml --region ${run['region']} --platform managed`;
 }
 
 function extractStatic(gae, run) {
