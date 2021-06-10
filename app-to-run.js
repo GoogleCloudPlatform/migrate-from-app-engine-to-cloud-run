@@ -68,6 +68,7 @@ function appToRun(gaeService) {
     extractStatic,
     extractAllowUnauthenticated,
     extractEntrypoint,
+    extractMigrateOffAppEngineAPIs,
   ]
   
   for (const extractFunction of extractFunctions) {
@@ -227,23 +228,34 @@ function extractCPU(gae, run) {
 
 function extractMigrateToSecondGen(gae, run) {
   const runtime = gae['app.yaml']['runtime'];
-  // "api_version" was deprecated for secnd gen runtimes
+  // "api_version" was deprecated for second gen runtimes
   if(gae['app.yaml']['api_version'] || firstGenRuntimes.includes(runtime)) {
-    run['migrate-to-second-gen'] = true;
-    if(!run['warnings']) {
-      run['warnings'] = [];
+    run['migrate_to_second_gen'] = true;
+    if(!run.warnings) {
+      run.warnings = [];
     }
 
-    let warning = {'message': 'You are using a first generation App Engine runtime, please migrate to a second generation App Engine runtime before migrating to Cloud Run. '};
+    let warning = {message: 'You are using a first generation App Engine runtime, please migrate to a second generation App Engine runtime before migrating to Cloud Run.'};
     if(firstGenMigrationGuides[runtime]) {
       warning.link = {
         'href': firstGenMigrationGuides[runtime],
         'text': 'Migration guide',
       }
     }
-    run['warnings'].push(warning);
+    run.warnings.push(warning);
   }
 } 
+
+function extractMigrateOffAppEngineAPIs(gae, run) {
+  if(gae['app.yaml']['app_engine_apis']) {
+    run.migrate_off_app_engine_apis = true;
+    if(!run.warnings) {
+      run.warnings = [];
+    }
+
+    run.warnings.push({message: 'The "app_engine_apis" attribute in your app.yaml means that your code might depend on APIs that are only available on App Engine, please migrate your code to use Google Cloud client libraries and remove the "app_engine_apis" attribute from your app.yaml'});
+  }
+}
 
 function extractBuild(gae, run) {
   run['gcloud'] = `gcloud builds submit --pack image=${run['service.yaml']['spec']['template']['spec']['containers'][0]['image']} && gcloud beta run services replace service.yaml --region ${run['region']} --platform managed`;
@@ -318,5 +330,6 @@ function extractEntrypoint(gae, run) {
     run['Procfile'] = `web: ${entrypoint}`;
   }
 }
+
 
 export {appToRun}

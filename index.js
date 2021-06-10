@@ -73,7 +73,7 @@ function appToRunDOM() {
   }
 
 
-  if(runService['migrate-to-second-gen']) {
+  if(runService.migrate_to_second_gen || runService.migrate_off_app_engine_apis) {
     document.getElementById('to-run').style.display = 'none';
   } else {
     document.getElementById('to-run').style.display = 'block';
