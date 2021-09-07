@@ -35,7 +35,9 @@ function appToRun(gaeService) {
       'spec': {
         'template': {
           'metadata': {
-              'annotations': {}
+              'annotations': {
+                'run.googleapis.com/cpu-throttling': 'false'
+              }
           },
           'spec': {
             'containers': [
