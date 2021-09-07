@@ -21,6 +21,7 @@ limitations under the License.
 /**
  * @param {Object} gaeService - Information about the App Engine service, should at minimum contain {"app.yaml" : {}}
  */
+// TODO: Remove "'run.googleapis.com/launch-stage': 'BETA'" when all use features are GA 
 function appToRun(gaeService) {
   let runService = {
     'service.yaml': {
@@ -30,6 +31,9 @@ function appToRun(gaeService) {
         'name' : 'default',
         'labels': {
           'migrated-from': 'app-engine'
+        },
+        'annotations': {
+          'run.googleapis.com/launch-stage': 'BETA'
         }
       },
       'spec': {
