@@ -326,7 +326,7 @@ function extractImageURL(gae, run) {
 }
 
 function extractAllowUnauthenticated(gae, run) {
-  run['make-public'] = `gcloud run services add-iam-policy-binding ${run['service.yaml']['metadata']['name']} --member="allUsers" --role="roles/run.invoker" --region ${run['service.yaml']['metadata']['labels']['cloud.googleapis.com/location']} --platform managed `;
+  run['make-public'] = `gcloud run services add-iam-policy-binding ${run['service.yaml']['metadata']['name']} --member="allUsers" --role="roles/run.invoker" --region ${run['service.yaml']['metadata']['labels']['cloud.googleapis.com/location']}`;
 }
 
 function extractEntrypoint(gae, run) {
