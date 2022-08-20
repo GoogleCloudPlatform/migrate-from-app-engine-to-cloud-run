@@ -32,7 +32,35 @@ function bindListeners() {
     } else {
       document.getElementById('gae-cloudsql-instance-container').style.display = 'none';
     }
-});
+  });
+
+  // Drag and drop
+  const dropzone = document.getElementById("dropzone");
+  dropzone.ondragover = dropzone.ondragenter = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+  }
+  dropzone.ondrop = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    handleFiles(e.dataTransfer.files);
+  }
+
+  // File selector
+  document.getElementById("yaml-selector").addEventListener("change", (e) => {
+    handleFiles(e.target.files);
+  }, false);
+
+  function handleFiles(files) {
+    if(files.length) {      
+      let reader = new FileReader();
+      reader.onload = e => {
+        document.getElementById('appyaml').value = e.target.result;
+        appToRunDOM();
+      };
+      reader.readAsText(files[0]);
+    }
+  }
 
 }
 

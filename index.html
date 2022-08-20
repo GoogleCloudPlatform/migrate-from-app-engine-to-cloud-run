@@ -47,7 +47,7 @@ limitations under the License.
   </script>
 </head>
 
-<body>
+<body id="dropzone">
 <header>
   <h1>App Engine to Cloud Run</h1>
   <p>Helper tool to migrate an App Engine service to a Cloud Run service.</p>
@@ -58,8 +58,10 @@ limitations under the License.
 <main>
   <div class="group">
     <h2 class="gae">Your App Engine service</h2>
-    <p>Provide details of your App Engine configuration:</p>
+    <p>Select, Drag and drop or copy paste your App Engine app.yaml:</p>
     <form id="gae">
+        <input type="file" id="yaml-selector" accept=".yml, .yaml">
+
         <label for="appyaml"><code>app.yaml</code>:</label>
         <textarea id="appyaml" class="file yaml input" spellcheck="false">
 runtime: nodejs10
