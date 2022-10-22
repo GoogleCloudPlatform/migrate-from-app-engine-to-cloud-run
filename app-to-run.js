@@ -203,14 +203,12 @@ function extractMemory(gae, run) {
 }
 
 function extractCPU(gae, run) {
-  // see https://cloud.google.com/appengine/docs/standard/#instance_classes
-
   const instanceClassCPU = {
-    'F1': '1',
-    'F2': '1',
-    'F4': '2',
-    'F4_HIGHMEM': '2', 
-    'F4_1G': '2', 
+    'F1': '1', // This should be 0.25, but Cloud Run CPU < 1 isn't compatible with many other parameters
+    'F2': '1', // This should be 0.5, but Cloud Run CPU < 1 isn't compatible with many other parameters
+    'F4': '1',
+    'F4_HIGHMEM': '1', 
+    'F4_1G': '1', 
   }
 
   function flexCPU(cpu) {
