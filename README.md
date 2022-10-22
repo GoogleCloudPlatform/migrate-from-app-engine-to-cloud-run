@@ -1,16 +1,14 @@
 # App Engine to Cloud Run
 
+**[Open online tool](https://googlecloudplatform.github.io/migrate-from-app-engine-to-cloud-run/)**
+
 Helper tool to migrate an App Engine service to a Cloud Run service.
-
-Data is never uploaded. All processing is happening client side.  
-
-This is not an officially supported Google product.
 
 ## How to use
 
 ### User interface
 
-* Open index.html or [click here](https://googlecloudplatform.github.io/app-engine-cloud-run-converter/)
+* Open index.html or [click here](https://googlecloudplatform.github.io/migrate-from-app-engine-to-cloud-run/)
 * Copy paste your `app.yaml`
 * Enter other information (project ID, region...)
 * Get your Cloud Run configuration file and deployment commands. 
@@ -32,3 +30,5 @@ TODO: document the exact API when it is stable.
 See it in action in this end to end demo on Youtube:
 
 [![App Engine to Cloud Run on Youtube](https://img.youtube.com/vi/XXP6QIS8VME/0.jpg)](https://www.youtube.com/watch?v=XXP6QIS8VME)
+
+This is not an officially supported Google product.
