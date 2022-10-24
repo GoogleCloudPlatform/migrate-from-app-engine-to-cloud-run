@@ -30,7 +30,8 @@ function appToRun(gaeService) {
       'metadata': {
         'name' : 'default',
         'labels': {
-          'migrated-from': 'app-engine'
+          'migrated-from': 'app-engine',
+          'migration-tool': 'app-to-run-js'
         },
         'annotations': {
           'run.googleapis.com/launch-stage': 'BETA'
