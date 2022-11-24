@@ -21,7 +21,6 @@ limitations under the License.
 /**
  * @param {Object} gaeService - Information about the App Engine service, should at minimum contain {"app.yaml" : {}}
  */
-// TODO: Remove "'run.googleapis.com/launch-stage': 'BETA'" when all use features are GA 
 function appToRun(gaeService) {
   let runService = {
     'service.yaml': {
@@ -33,9 +32,7 @@ function appToRun(gaeService) {
           'migrated-from': 'app-engine',
           'migration-tool': 'app-to-run-js'
         },
-        'annotations': {
-          'run.googleapis.com/launch-stage': 'BETA'
-        }
+        'annotations': {}
       },
       'spec': {
         'template': {
@@ -263,7 +260,7 @@ function extractMigrateOffAppEngineAPIs(gae, run) {
 }
 
 function extractBuild(gae, run) {
-  run['gcloud'] = `gcloud builds submit --pack image=${run['service.yaml']['spec']['template']['spec']['containers'][0]['image']} && gcloud beta run services replace service.yaml --region ${run['region']}`;
+  run['gcloud'] = `gcloud builds submit --pack image=${run['service.yaml']['spec']['template']['spec']['containers'][0]['image']} && gcloud run services replace service.yaml --region ${run['region']}`;
 }
 
 function extractStatic(gae, run) {
